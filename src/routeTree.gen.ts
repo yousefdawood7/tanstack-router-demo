@@ -12,10 +12,17 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SettingsRouteImport } from './routes/_settings'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as PostsRouteImport } from './routes/posts'
+import { Route as PostsIndexRouteImport } from './routes/posts.index'
+import { Route as PostsTestChar123postIdChar125RouteImport } from './routes/posts.test-{$postId}'
 import { Route as SettingsPasswordsRouteImport } from './routes/settings_.passwords'
+import { Route as UsersUserIdRouteRouteImport } from './routes/users/$userId/route'
 import { Route as SettingsSettingsIndexRouteImport } from './routes/_settings.settings.index'
 import { Route as SettingsSettingsPaymentRouteImport } from './routes/_settings.settings.payment'
 import { Route as SettingsSettingsProfileRouteImport } from './routes/_settings.settings.profile'
+import { Route as OnDiskStorageChar123PostIdChar125SplatRouteImport } from './routes/on-disk/storage-{-$postId}/$'
+import { Route as PostsPostIdEditRouteImport } from './routes/posts.$postId_.edit'
+import { Route as UsersUserIdEditIndexRouteImport } from './routes/users/$userId/edit/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -31,9 +38,30 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PostsRoute = PostsRouteImport.update({
+  id: '/posts',
+  path: '/posts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PostsIndexRoute = PostsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PostsRoute,
+} as any)
+const PostsTestChar123postIdChar125Route =
+  PostsTestChar123postIdChar125RouteImport.update({
+    id: '/test-{$postId}',
+    path: '/test-{$postId}',
+    getParentRoute: () => PostsRoute,
+  } as any)
 const SettingsPasswordsRoute = SettingsPasswordsRouteImport.update({
   id: '/settings_/passwords',
   path: '/settings/passwords',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UsersUserIdRouteRoute = UsersUserIdRouteRouteImport.update({
+  id: '/users/$userId',
+  path: '/users/$userId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsSettingsIndexRoute = SettingsSettingsIndexRouteImport.update({
@@ -51,66 +79,125 @@ const SettingsSettingsProfileRoute = SettingsSettingsProfileRouteImport.update({
   path: '/settings/profile',
   getParentRoute: () => SettingsRoute,
 } as any)
+const OnDiskStorageChar123PostIdChar125SplatRoute =
+  OnDiskStorageChar123PostIdChar125SplatRouteImport.update({
+    id: '/on-disk/storage-{-$postId}/$',
+    path: '/on-disk/storage-{-$postId}/$',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const PostsPostIdEditRoute = PostsPostIdEditRouteImport.update({
+  id: '/$postId_/edit',
+  path: '/$postId/edit',
+  getParentRoute: () => PostsRoute,
+} as any)
+const UsersUserIdEditIndexRoute = UsersUserIdEditIndexRouteImport.update({
+  id: '/edit/',
+  path: '/edit/',
+  getParentRoute: () => UsersUserIdRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/posts': typeof PostsRouteWithChildren
+  '/users/$userId': typeof UsersUserIdRouteRouteWithChildren
+  '/posts/test-{$postId}': typeof PostsTestChar123postIdChar125Route
   '/settings/passwords': typeof SettingsPasswordsRoute
+  '/posts/': typeof PostsIndexRoute
   '/settings/payment': typeof SettingsSettingsPaymentRoute
   '/settings/profile': typeof SettingsSettingsProfileRoute
+  '/on-disk/storage-{-$postId}/$': typeof OnDiskStorageChar123PostIdChar125SplatRoute
+  '/posts/$postId/edit': typeof PostsPostIdEditRoute
   '/settings/': typeof SettingsSettingsIndexRoute
+  '/users/$userId/edit/': typeof UsersUserIdEditIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/users/$userId': typeof UsersUserIdRouteRouteWithChildren
+  '/posts/test-{$postId}': typeof PostsTestChar123postIdChar125Route
   '/settings/passwords': typeof SettingsPasswordsRoute
+  '/posts': typeof PostsIndexRoute
   '/settings/payment': typeof SettingsSettingsPaymentRoute
   '/settings/profile': typeof SettingsSettingsProfileRoute
+  '/on-disk/storage-{-$postId}/$': typeof OnDiskStorageChar123PostIdChar125SplatRoute
+  '/posts/$postId/edit': typeof PostsPostIdEditRoute
   '/settings': typeof SettingsSettingsIndexRoute
+  '/users/$userId/edit': typeof UsersUserIdEditIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_settings': typeof SettingsRouteWithChildren
   '/about': typeof AboutRoute
+  '/posts': typeof PostsRouteWithChildren
+  '/users/$userId': typeof UsersUserIdRouteRouteWithChildren
+  '/posts/test-{$postId}': typeof PostsTestChar123postIdChar125Route
   '/settings_/passwords': typeof SettingsPasswordsRoute
+  '/posts/': typeof PostsIndexRoute
   '/_settings/settings/payment': typeof SettingsSettingsPaymentRoute
   '/_settings/settings/profile': typeof SettingsSettingsProfileRoute
+  '/on-disk/storage-{-$postId}/$': typeof OnDiskStorageChar123PostIdChar125SplatRoute
+  '/posts/$postId_/edit': typeof PostsPostIdEditRoute
   '/_settings/settings/': typeof SettingsSettingsIndexRoute
+  '/users/$userId/edit/': typeof UsersUserIdEditIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/about'
+    | '/posts'
+    | '/users/$userId'
+    | '/posts/test-{$postId}'
     | '/settings/passwords'
+    | '/posts/'
     | '/settings/payment'
     | '/settings/profile'
+    | '/on-disk/storage-{-$postId}/$'
+    | '/posts/$postId/edit'
     | '/settings/'
+    | '/users/$userId/edit/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
+    | '/users/$userId'
+    | '/posts/test-{$postId}'
     | '/settings/passwords'
+    | '/posts'
     | '/settings/payment'
     | '/settings/profile'
+    | '/on-disk/storage-{-$postId}/$'
+    | '/posts/$postId/edit'
     | '/settings'
+    | '/users/$userId/edit'
   id:
     | '__root__'
     | '/'
     | '/_settings'
     | '/about'
+    | '/posts'
+    | '/users/$userId'
+    | '/posts/test-{$postId}'
     | '/settings_/passwords'
+    | '/posts/'
     | '/_settings/settings/payment'
     | '/_settings/settings/profile'
+    | '/on-disk/storage-{-$postId}/$'
+    | '/posts/$postId_/edit'
     | '/_settings/settings/'
+    | '/users/$userId/edit/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SettingsRoute: typeof SettingsRouteWithChildren
   AboutRoute: typeof AboutRoute
+  PostsRoute: typeof PostsRouteWithChildren
+  UsersUserIdRouteRoute: typeof UsersUserIdRouteRouteWithChildren
   SettingsPasswordsRoute: typeof SettingsPasswordsRoute
+  OnDiskStorageChar123PostIdChar125SplatRoute: typeof OnDiskStorageChar123PostIdChar125SplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -136,11 +223,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/posts': {
+      id: '/posts'
+      path: '/posts'
+      fullPath: '/posts'
+      preLoaderRoute: typeof PostsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/posts/': {
+      id: '/posts/'
+      path: '/'
+      fullPath: '/posts/'
+      preLoaderRoute: typeof PostsIndexRouteImport
+      parentRoute: typeof PostsRoute
+    }
+    '/posts/test-{$postId}': {
+      id: '/posts/test-{$postId}'
+      path: '/test-{$postId}'
+      fullPath: '/posts/test-{$postId}'
+      preLoaderRoute: typeof PostsTestChar123postIdChar125RouteImport
+      parentRoute: typeof PostsRoute
+    }
     '/settings_/passwords': {
       id: '/settings_/passwords'
       path: '/settings/passwords'
       fullPath: '/settings/passwords'
       preLoaderRoute: typeof SettingsPasswordsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/users/$userId': {
+      id: '/users/$userId'
+      path: '/users/$userId'
+      fullPath: '/users/$userId'
+      preLoaderRoute: typeof UsersUserIdRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_settings/settings/': {
@@ -164,6 +279,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsSettingsProfileRouteImport
       parentRoute: typeof SettingsRoute
     }
+    '/on-disk/storage-{-$postId}/$': {
+      id: '/on-disk/storage-{-$postId}/$'
+      path: '/on-disk/storage-{-$postId}/$'
+      fullPath: '/on-disk/storage-{-$postId}/$'
+      preLoaderRoute: typeof OnDiskStorageChar123PostIdChar125SplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/posts/$postId_/edit': {
+      id: '/posts/$postId_/edit'
+      path: '/$postId/edit'
+      fullPath: '/posts/$postId/edit'
+      preLoaderRoute: typeof PostsPostIdEditRouteImport
+      parentRoute: typeof PostsRoute
+    }
+    '/users/$userId/edit/': {
+      id: '/users/$userId/edit/'
+      path: '/edit'
+      fullPath: '/users/$userId/edit/'
+      preLoaderRoute: typeof UsersUserIdEditIndexRouteImport
+      parentRoute: typeof UsersUserIdRouteRoute
+    }
   }
 }
 
@@ -183,11 +319,40 @@ const SettingsRouteWithChildren = SettingsRoute._addFileChildren(
   SettingsRouteChildren,
 )
 
+interface PostsRouteChildren {
+  PostsTestChar123postIdChar125Route: typeof PostsTestChar123postIdChar125Route
+  PostsIndexRoute: typeof PostsIndexRoute
+  PostsPostIdEditRoute: typeof PostsPostIdEditRoute
+}
+
+const PostsRouteChildren: PostsRouteChildren = {
+  PostsTestChar123postIdChar125Route: PostsTestChar123postIdChar125Route,
+  PostsIndexRoute: PostsIndexRoute,
+  PostsPostIdEditRoute: PostsPostIdEditRoute,
+}
+
+const PostsRouteWithChildren = PostsRoute._addFileChildren(PostsRouteChildren)
+
+interface UsersUserIdRouteRouteChildren {
+  UsersUserIdEditIndexRoute: typeof UsersUserIdEditIndexRoute
+}
+
+const UsersUserIdRouteRouteChildren: UsersUserIdRouteRouteChildren = {
+  UsersUserIdEditIndexRoute: UsersUserIdEditIndexRoute,
+}
+
+const UsersUserIdRouteRouteWithChildren =
+  UsersUserIdRouteRoute._addFileChildren(UsersUserIdRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SettingsRoute: SettingsRouteWithChildren,
   AboutRoute: AboutRoute,
+  PostsRoute: PostsRouteWithChildren,
+  UsersUserIdRouteRoute: UsersUserIdRouteRouteWithChildren,
   SettingsPasswordsRoute: SettingsPasswordsRoute,
+  OnDiskStorageChar123PostIdChar125SplatRoute:
+    OnDiskStorageChar123PostIdChar125SplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
