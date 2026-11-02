@@ -10,19 +10,19 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as SettingsRouteRouteImport } from './routes/_settings/route'
+import { Route as SettingsRouteImport } from './routes/_settings'
 import { Route as AboutRouteImport } from './routes/about'
-import { Route as SettingsPasswordsRouteImport } from './routes/settings_/passwords'
-import { Route as SettingsSettingsIndexRouteImport } from './routes/_settings/settings/index'
-import { Route as SettingsSettingsPaymentRouteImport } from './routes/_settings/settings/payment'
-import { Route as SettingsSettingsProfileRouteImport } from './routes/_settings/settings/profile'
+import { Route as SettingsPasswordsRouteImport } from './routes/settings_.passwords'
+import { Route as SettingsSettingsIndexRouteImport } from './routes/_settings.settings.index'
+import { Route as SettingsSettingsPaymentRouteImport } from './routes/_settings.settings.payment'
+import { Route as SettingsSettingsProfileRouteImport } from './routes/_settings.settings.profile'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SettingsRouteRoute = SettingsRouteRouteImport.update({
+const SettingsRoute = SettingsRouteImport.update({
   id: '/_settings',
   getParentRoute: () => rootRouteImport,
 } as any)
@@ -39,17 +39,17 @@ const SettingsPasswordsRoute = SettingsPasswordsRouteImport.update({
 const SettingsSettingsIndexRoute = SettingsSettingsIndexRouteImport.update({
   id: '/settings/',
   path: '/settings/',
-  getParentRoute: () => SettingsRouteRoute,
+  getParentRoute: () => SettingsRoute,
 } as any)
 const SettingsSettingsPaymentRoute = SettingsSettingsPaymentRouteImport.update({
   id: '/settings/payment',
   path: '/settings/payment',
-  getParentRoute: () => SettingsRouteRoute,
+  getParentRoute: () => SettingsRoute,
 } as any)
 const SettingsSettingsProfileRoute = SettingsSettingsProfileRouteImport.update({
   id: '/settings/profile',
   path: '/settings/profile',
-  getParentRoute: () => SettingsRouteRoute,
+  getParentRoute: () => SettingsRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -71,7 +71,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/_settings': typeof SettingsRouteRouteWithChildren
+  '/_settings': typeof SettingsRouteWithChildren
   '/about': typeof AboutRoute
   '/settings_/passwords': typeof SettingsPasswordsRoute
   '/_settings/settings/payment': typeof SettingsSettingsPaymentRoute
@@ -108,7 +108,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  SettingsRouteRoute: typeof SettingsRouteRouteWithChildren
+  SettingsRoute: typeof SettingsRouteWithChildren
   AboutRoute: typeof AboutRoute
   SettingsPasswordsRoute: typeof SettingsPasswordsRoute
 }
@@ -126,7 +126,7 @@ declare module '@tanstack/react-router' {
       id: '/_settings'
       path: ''
       fullPath: '/'
-      preLoaderRoute: typeof SettingsRouteRouteImport
+      preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -148,44 +148,44 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings/'
       preLoaderRoute: typeof SettingsSettingsIndexRouteImport
-      parentRoute: typeof SettingsRouteRoute
+      parentRoute: typeof SettingsRoute
     }
     '/_settings/settings/payment': {
       id: '/_settings/settings/payment'
       path: '/settings/payment'
       fullPath: '/settings/payment'
       preLoaderRoute: typeof SettingsSettingsPaymentRouteImport
-      parentRoute: typeof SettingsRouteRoute
+      parentRoute: typeof SettingsRoute
     }
     '/_settings/settings/profile': {
       id: '/_settings/settings/profile'
       path: '/settings/profile'
       fullPath: '/settings/profile'
       preLoaderRoute: typeof SettingsSettingsProfileRouteImport
-      parentRoute: typeof SettingsRouteRoute
+      parentRoute: typeof SettingsRoute
     }
   }
 }
 
-interface SettingsRouteRouteChildren {
+interface SettingsRouteChildren {
   SettingsSettingsPaymentRoute: typeof SettingsSettingsPaymentRoute
   SettingsSettingsProfileRoute: typeof SettingsSettingsProfileRoute
   SettingsSettingsIndexRoute: typeof SettingsSettingsIndexRoute
 }
 
-const SettingsRouteRouteChildren: SettingsRouteRouteChildren = {
+const SettingsRouteChildren: SettingsRouteChildren = {
   SettingsSettingsPaymentRoute: SettingsSettingsPaymentRoute,
   SettingsSettingsProfileRoute: SettingsSettingsProfileRoute,
   SettingsSettingsIndexRoute: SettingsSettingsIndexRoute,
 }
 
-const SettingsRouteRouteWithChildren = SettingsRouteRoute._addFileChildren(
-  SettingsRouteRouteChildren,
+const SettingsRouteWithChildren = SettingsRoute._addFileChildren(
+  SettingsRouteChildren,
 )
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  SettingsRouteRoute: SettingsRouteRouteWithChildren,
+  SettingsRoute: SettingsRouteWithChildren,
   AboutRoute: AboutRoute,
   SettingsPasswordsRoute: SettingsPasswordsRoute,
 }
