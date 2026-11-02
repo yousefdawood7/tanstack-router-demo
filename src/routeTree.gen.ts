@@ -14,7 +14,9 @@ import { Route as SettingsRouteImport } from './routes/_settings'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as PostsRouteImport } from './routes/posts'
 import { Route as PostsIndexRouteImport } from './routes/posts.index'
-import { Route as PostsTestChar123postIdChar125RouteImport } from './routes/posts.test-{$postId}'
+import { Route as PostsTestChar123PostIdChar125RouteImport } from './routes/posts.test-{-$postId}'
+import { Route as SettingsConfigChar123fileNameChar125DotjsonRouteImport } from './routes/settings.config-{$fileName}[.]json'
+import { Route as SettingsConfigsChar123Char125DotjsonRouteImport } from './routes/settings.configs-{$}[.]json'
 import { Route as SettingsPasswordsRouteImport } from './routes/settings_.passwords'
 import { Route as UsersUserIdRouteRouteImport } from './routes/users/$userId/route'
 import { Route as SettingsSettingsIndexRouteImport } from './routes/_settings.settings.index'
@@ -22,6 +24,8 @@ import { Route as SettingsSettingsPaymentRouteImport } from './routes/_settings.
 import { Route as SettingsSettingsProfileRouteImport } from './routes/_settings.settings.profile'
 import { Route as OnDiskStorageChar123PostIdChar125SplatRouteImport } from './routes/on-disk/storage-{-$postId}/$'
 import { Route as PostsPostIdEditRouteImport } from './routes/posts.$postId_.edit'
+import { Route as SettingsConfigChar123fileNameChar125DotjsonIndexRouteImport } from './routes/settings/config-{$fileName}[.]json/index'
+import { Route as LanguagesChar123LangCharChar125ArchiveSplatRouteImport } from './routes/languages.{-$langChar}.archive.$'
 import { Route as UsersUserIdEditIndexRouteImport } from './routes/users/$userId/edit/index'
 
 const IndexRoute = IndexRouteImport.update({
@@ -48,11 +52,23 @@ const PostsIndexRoute = PostsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => PostsRoute,
 } as any)
-const PostsTestChar123postIdChar125Route =
-  PostsTestChar123postIdChar125RouteImport.update({
-    id: '/test-{$postId}',
-    path: '/test-{$postId}',
+const PostsTestChar123PostIdChar125Route =
+  PostsTestChar123PostIdChar125RouteImport.update({
+    id: '/test-{-$postId}',
+    path: '/test-{-$postId}',
     getParentRoute: () => PostsRoute,
+  } as any)
+const SettingsConfigChar123fileNameChar125DotjsonRoute =
+  SettingsConfigChar123fileNameChar125DotjsonRouteImport.update({
+    id: '/settings/config-{$fileName}.json',
+    path: '/settings/config-{$fileName}.json',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const SettingsConfigsChar123Char125DotjsonRoute =
+  SettingsConfigsChar123Char125DotjsonRouteImport.update({
+    id: '/settings/configs-{$}.json',
+    path: '/settings/configs-{$}.json',
+    getParentRoute: () => rootRouteImport,
   } as any)
 const SettingsPasswordsRoute = SettingsPasswordsRouteImport.update({
   id: '/settings_/passwords',
@@ -90,6 +106,18 @@ const PostsPostIdEditRoute = PostsPostIdEditRouteImport.update({
   path: '/$postId/edit',
   getParentRoute: () => PostsRoute,
 } as any)
+const SettingsConfigChar123fileNameChar125DotjsonIndexRoute =
+  SettingsConfigChar123fileNameChar125DotjsonIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => SettingsConfigChar123fileNameChar125DotjsonRoute,
+  } as any)
+const LanguagesChar123LangCharChar125ArchiveSplatRoute =
+  LanguagesChar123LangCharChar125ArchiveSplatRouteImport.update({
+    id: '/languages/{-$langChar}/archive/$',
+    path: '/languages/{-$langChar}/archive/$',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const UsersUserIdEditIndexRoute = UsersUserIdEditIndexRouteImport.update({
   id: '/edit/',
   path: '/edit/',
@@ -101,7 +129,9 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/posts': typeof PostsRouteWithChildren
   '/users/$userId': typeof UsersUserIdRouteRouteWithChildren
-  '/posts/test-{$postId}': typeof PostsTestChar123postIdChar125Route
+  '/posts/test-{-$postId}': typeof PostsTestChar123PostIdChar125Route
+  '/settings/config-{$fileName}.json': typeof SettingsConfigChar123fileNameChar125DotjsonRouteWithChildren
+  '/settings/configs-{$}.json': typeof SettingsConfigsChar123Char125DotjsonRoute
   '/settings/passwords': typeof SettingsPasswordsRoute
   '/posts/': typeof PostsIndexRoute
   '/settings/payment': typeof SettingsSettingsPaymentRoute
@@ -109,13 +139,16 @@ export interface FileRoutesByFullPath {
   '/on-disk/storage-{-$postId}/$': typeof OnDiskStorageChar123PostIdChar125SplatRoute
   '/posts/$postId/edit': typeof PostsPostIdEditRoute
   '/settings/': typeof SettingsSettingsIndexRoute
+  '/settings/config-{$fileName}.json/': typeof SettingsConfigChar123fileNameChar125DotjsonIndexRoute
+  '/languages/{-$langChar}/archive/$': typeof LanguagesChar123LangCharChar125ArchiveSplatRoute
   '/users/$userId/edit/': typeof UsersUserIdEditIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/users/$userId': typeof UsersUserIdRouteRouteWithChildren
-  '/posts/test-{$postId}': typeof PostsTestChar123postIdChar125Route
+  '/posts/test-{-$postId}': typeof PostsTestChar123PostIdChar125Route
+  '/settings/configs-{$}.json': typeof SettingsConfigsChar123Char125DotjsonRoute
   '/settings/passwords': typeof SettingsPasswordsRoute
   '/posts': typeof PostsIndexRoute
   '/settings/payment': typeof SettingsSettingsPaymentRoute
@@ -123,6 +156,8 @@ export interface FileRoutesByTo {
   '/on-disk/storage-{-$postId}/$': typeof OnDiskStorageChar123PostIdChar125SplatRoute
   '/posts/$postId/edit': typeof PostsPostIdEditRoute
   '/settings': typeof SettingsSettingsIndexRoute
+  '/settings/config-{$fileName}.json': typeof SettingsConfigChar123fileNameChar125DotjsonIndexRoute
+  '/languages/{-$langChar}/archive/$': typeof LanguagesChar123LangCharChar125ArchiveSplatRoute
   '/users/$userId/edit': typeof UsersUserIdEditIndexRoute
 }
 export interface FileRoutesById {
@@ -132,7 +167,9 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/posts': typeof PostsRouteWithChildren
   '/users/$userId': typeof UsersUserIdRouteRouteWithChildren
-  '/posts/test-{$postId}': typeof PostsTestChar123postIdChar125Route
+  '/posts/test-{-$postId}': typeof PostsTestChar123PostIdChar125Route
+  '/settings/config-{$fileName}.json': typeof SettingsConfigChar123fileNameChar125DotjsonRouteWithChildren
+  '/settings/configs-{$}.json': typeof SettingsConfigsChar123Char125DotjsonRoute
   '/settings_/passwords': typeof SettingsPasswordsRoute
   '/posts/': typeof PostsIndexRoute
   '/_settings/settings/payment': typeof SettingsSettingsPaymentRoute
@@ -140,6 +177,8 @@ export interface FileRoutesById {
   '/on-disk/storage-{-$postId}/$': typeof OnDiskStorageChar123PostIdChar125SplatRoute
   '/posts/$postId_/edit': typeof PostsPostIdEditRoute
   '/_settings/settings/': typeof SettingsSettingsIndexRoute
+  '/settings/config-{$fileName}.json/': typeof SettingsConfigChar123fileNameChar125DotjsonIndexRoute
+  '/languages/{-$langChar}/archive/$': typeof LanguagesChar123LangCharChar125ArchiveSplatRoute
   '/users/$userId/edit/': typeof UsersUserIdEditIndexRoute
 }
 export interface FileRouteTypes {
@@ -149,7 +188,9 @@ export interface FileRouteTypes {
     | '/about'
     | '/posts'
     | '/users/$userId'
-    | '/posts/test-{$postId}'
+    | '/posts/test-{-$postId}'
+    | '/settings/config-{$fileName}.json'
+    | '/settings/configs-{$}.json'
     | '/settings/passwords'
     | '/posts/'
     | '/settings/payment'
@@ -157,13 +198,16 @@ export interface FileRouteTypes {
     | '/on-disk/storage-{-$postId}/$'
     | '/posts/$postId/edit'
     | '/settings/'
+    | '/settings/config-{$fileName}.json/'
+    | '/languages/{-$langChar}/archive/$'
     | '/users/$userId/edit/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
     | '/users/$userId'
-    | '/posts/test-{$postId}'
+    | '/posts/test-{-$postId}'
+    | '/settings/configs-{$}.json'
     | '/settings/passwords'
     | '/posts'
     | '/settings/payment'
@@ -171,6 +215,8 @@ export interface FileRouteTypes {
     | '/on-disk/storage-{-$postId}/$'
     | '/posts/$postId/edit'
     | '/settings'
+    | '/settings/config-{$fileName}.json'
+    | '/languages/{-$langChar}/archive/$'
     | '/users/$userId/edit'
   id:
     | '__root__'
@@ -179,7 +225,9 @@ export interface FileRouteTypes {
     | '/about'
     | '/posts'
     | '/users/$userId'
-    | '/posts/test-{$postId}'
+    | '/posts/test-{-$postId}'
+    | '/settings/config-{$fileName}.json'
+    | '/settings/configs-{$}.json'
     | '/settings_/passwords'
     | '/posts/'
     | '/_settings/settings/payment'
@@ -187,6 +235,8 @@ export interface FileRouteTypes {
     | '/on-disk/storage-{-$postId}/$'
     | '/posts/$postId_/edit'
     | '/_settings/settings/'
+    | '/settings/config-{$fileName}.json/'
+    | '/languages/{-$langChar}/archive/$'
     | '/users/$userId/edit/'
   fileRoutesById: FileRoutesById
 }
@@ -196,8 +246,11 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   PostsRoute: typeof PostsRouteWithChildren
   UsersUserIdRouteRoute: typeof UsersUserIdRouteRouteWithChildren
+  SettingsConfigChar123fileNameChar125DotjsonRoute: typeof SettingsConfigChar123fileNameChar125DotjsonRouteWithChildren
+  SettingsConfigsChar123Char125DotjsonRoute: typeof SettingsConfigsChar123Char125DotjsonRoute
   SettingsPasswordsRoute: typeof SettingsPasswordsRoute
   OnDiskStorageChar123PostIdChar125SplatRoute: typeof OnDiskStorageChar123PostIdChar125SplatRoute
+  LanguagesChar123LangCharChar125ArchiveSplatRoute: typeof LanguagesChar123LangCharChar125ArchiveSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -237,12 +290,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PostsIndexRouteImport
       parentRoute: typeof PostsRoute
     }
-    '/posts/test-{$postId}': {
-      id: '/posts/test-{$postId}'
-      path: '/test-{$postId}'
-      fullPath: '/posts/test-{$postId}'
-      preLoaderRoute: typeof PostsTestChar123postIdChar125RouteImport
+    '/posts/test-{-$postId}': {
+      id: '/posts/test-{-$postId}'
+      path: '/test-{-$postId}'
+      fullPath: '/posts/test-{-$postId}'
+      preLoaderRoute: typeof PostsTestChar123PostIdChar125RouteImport
       parentRoute: typeof PostsRoute
+    }
+    '/settings/config-{$fileName}.json': {
+      id: '/settings/config-{$fileName}.json'
+      path: '/settings/config-{$fileName}.json'
+      fullPath: '/settings/config-{$fileName}.json'
+      preLoaderRoute: typeof SettingsConfigChar123fileNameChar125DotjsonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/configs-{$}.json': {
+      id: '/settings/configs-{$}.json'
+      path: '/settings/configs-{$}.json'
+      fullPath: '/settings/configs-{$}.json'
+      preLoaderRoute: typeof SettingsConfigsChar123Char125DotjsonRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/settings_/passwords': {
       id: '/settings_/passwords'
@@ -293,6 +360,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PostsPostIdEditRouteImport
       parentRoute: typeof PostsRoute
     }
+    '/settings/config-{$fileName}.json/': {
+      id: '/settings/config-{$fileName}.json/'
+      path: '/'
+      fullPath: '/settings/config-{$fileName}.json/'
+      preLoaderRoute: typeof SettingsConfigChar123fileNameChar125DotjsonIndexRouteImport
+      parentRoute: typeof SettingsConfigChar123fileNameChar125DotjsonRoute
+    }
+    '/languages/{-$langChar}/archive/$': {
+      id: '/languages/{-$langChar}/archive/$'
+      path: '/languages/{-$langChar}/archive/$'
+      fullPath: '/languages/{-$langChar}/archive/$'
+      preLoaderRoute: typeof LanguagesChar123LangCharChar125ArchiveSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/users/$userId/edit/': {
       id: '/users/$userId/edit/'
       path: '/edit'
@@ -320,13 +401,13 @@ const SettingsRouteWithChildren = SettingsRoute._addFileChildren(
 )
 
 interface PostsRouteChildren {
-  PostsTestChar123postIdChar125Route: typeof PostsTestChar123postIdChar125Route
+  PostsTestChar123PostIdChar125Route: typeof PostsTestChar123PostIdChar125Route
   PostsIndexRoute: typeof PostsIndexRoute
   PostsPostIdEditRoute: typeof PostsPostIdEditRoute
 }
 
 const PostsRouteChildren: PostsRouteChildren = {
-  PostsTestChar123postIdChar125Route: PostsTestChar123postIdChar125Route,
+  PostsTestChar123PostIdChar125Route: PostsTestChar123PostIdChar125Route,
   PostsIndexRoute: PostsIndexRoute,
   PostsPostIdEditRoute: PostsPostIdEditRoute,
 }
@@ -344,15 +425,36 @@ const UsersUserIdRouteRouteChildren: UsersUserIdRouteRouteChildren = {
 const UsersUserIdRouteRouteWithChildren =
   UsersUserIdRouteRoute._addFileChildren(UsersUserIdRouteRouteChildren)
 
+interface SettingsConfigChar123fileNameChar125DotjsonRouteChildren {
+  SettingsConfigChar123fileNameChar125DotjsonIndexRoute: typeof SettingsConfigChar123fileNameChar125DotjsonIndexRoute
+}
+
+const SettingsConfigChar123fileNameChar125DotjsonRouteChildren: SettingsConfigChar123fileNameChar125DotjsonRouteChildren =
+  {
+    SettingsConfigChar123fileNameChar125DotjsonIndexRoute:
+      SettingsConfigChar123fileNameChar125DotjsonIndexRoute,
+  }
+
+const SettingsConfigChar123fileNameChar125DotjsonRouteWithChildren =
+  SettingsConfigChar123fileNameChar125DotjsonRoute._addFileChildren(
+    SettingsConfigChar123fileNameChar125DotjsonRouteChildren,
+  )
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SettingsRoute: SettingsRouteWithChildren,
   AboutRoute: AboutRoute,
   PostsRoute: PostsRouteWithChildren,
   UsersUserIdRouteRoute: UsersUserIdRouteRouteWithChildren,
+  SettingsConfigChar123fileNameChar125DotjsonRoute:
+    SettingsConfigChar123fileNameChar125DotjsonRouteWithChildren,
+  SettingsConfigsChar123Char125DotjsonRoute:
+    SettingsConfigsChar123Char125DotjsonRoute,
   SettingsPasswordsRoute: SettingsPasswordsRoute,
   OnDiskStorageChar123PostIdChar125SplatRoute:
     OnDiskStorageChar123PostIdChar125SplatRoute,
+  LanguagesChar123LangCharChar125ArchiveSplatRoute:
+    LanguagesChar123LangCharChar125ArchiveSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
