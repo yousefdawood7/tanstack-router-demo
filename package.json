@@ -13,9 +13,11 @@
     "@tanstack/react-router": "^1.170.46",
     "@tanstack/react-router-devtools": "^1.167.2",
     "react": "^19.3.1",
-    "react-dom": "^19.3.1"
+    "react-dom": "^19.3.1",
+    "react-hook-form": "^7.91.0"
   },
   "devDependencies": {
+    "@hookform/devtools": "^4.4.0",
     "@tailwindcss/vite": "^4.3.3",
     "@tanstack/router-plugin": "^1.168.48",
     "@types/node": "^24.19.2",
