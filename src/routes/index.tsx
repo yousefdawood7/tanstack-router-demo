@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 
 export const Route = createFileRoute("/")({
@@ -9,6 +9,7 @@ export const Route = createFileRoute("/")({
 type SignForm = {
   name: string;
   email: string;
+  address: { value: string }[];
 
   fields: {
     frontend: Record<string, unknown>;
@@ -34,6 +35,13 @@ function RouteComponent() {
       },
     },
   });
+
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "address",
+  });
+
+  console.log(fields);
 
   return (
     <form
@@ -78,12 +86,38 @@ function RouteComponent() {
           {...form.register("fields.frontend.react")}
         />
       </p>
-      <button
-        type="submit"
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-      >
-        Submit
-      </button>
+      <div className="flex gap-2">
+        <button
+          type="submit"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Submit
+        </button>
+      </div>
+
+      <hr />
+      <div className="space-y-2">
+        <h2>Form Fields</h2>
+        <button
+          type="button"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={() => {
+            append({ value: "" + Math.random() });
+          }}
+        >
+          Add Field
+        </button>
+        {fields.map((el, index) => (
+          <div key={el.id}>
+            <input
+              type="text"
+              {...form.register(`address.${index}.value`)}
+              className="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <button onClick={() => remove(index)}>Remove</button>
+          </div>
+        ))}
+      </div>
       <DevTool control={form.control} />
     </form>
   );
