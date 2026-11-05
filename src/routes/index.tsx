@@ -20,7 +20,7 @@ type SignForm = {
 function RouteComponent() {
   const form = useForm<SignForm>({
     defaultValues: {
-      name: "",
+      name: "Yousef",
       email: "",
       fields: {
         frontend: {
@@ -36,13 +36,15 @@ function RouteComponent() {
     },
   });
 
+  const isTouched = Object.keys(form.formState.touchedFields).length;
+  const errors = Object.keys(form.formState.errors).length;
+
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: "address",
   });
 
   console.log(fields);
-
   return (
     <form
       onSubmit={form.handleSubmit((formValues) => {
@@ -55,7 +57,9 @@ function RouteComponent() {
           type="text"
           placeholder="Enter your name"
           className="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          // disabled
           {...form.register("name", {
+            disabled: true,
             required: { message: "The name field is required", value: true },
           })}
         />
@@ -89,7 +93,8 @@ function RouteComponent() {
       <div className="flex gap-2">
         <button
           type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:bg-blue-700"
+          disabled={!isTouched || !!errors}
         >
           Submit
         </button>
@@ -100,7 +105,7 @@ function RouteComponent() {
         <h2>Form Fields</h2>
         <button
           type="button"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:bg-blue-700"
           onClick={() => {
             append({ value: "" + Math.random() });
           }}
