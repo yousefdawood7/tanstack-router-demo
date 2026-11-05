@@ -2,22 +2,20 @@ import { createFileRoute } from "@tanstack/react-router";
 import {
   columnFilteringFeature,
   createFilteredRowModel,
+  createPaginatedRowModel,
   createSortedRowModel,
   filterFn_includesString,
-  FlexRender,
-  globalFilteringFeature,
+  rowPaginationFeature,
   rowSortingFeature,
   sortFn_alphanumeric,
   sortFn_datetime,
   tableFeatures,
   useTable,
-  type ColumnFiltersState,
 } from "@tanstack/react-table";
+import { useTanStackTableDevtools } from "@tanstack/react-table-devtools/production";
 import { COLUMNS } from "../components/tables/column";
 import data from "../data/MOCK_DATA.json";
-import { useTanStackTableDevtools } from "@tanstack/react-table-devtools/production";
 import styles from "./about.module.css";
-import { useState } from "react";
 
 export const Route = createFileRoute("/about")({
   component: RouteComponent,
@@ -27,13 +25,15 @@ export const features = tableFeatures({
   rowSortingFeature,
   columnFilteringFeature,
   // globalFilteringFeature,
-  sortedRowModel: createSortedRowModel(),
+  rowPaginationFeature,
+
   filteredRowModel: createFilteredRowModel(),
+  paginatedRowModel: createPaginatedRowModel(),
+  sortedRowModel: createSortedRowModel(),
 
   filterFns: {
     includes: filterFn_includesString,
   },
-
   sortFns: {
     alphanumberic: sortFn_alphanumeric,
     date: sortFn_datetime,
@@ -49,7 +49,10 @@ function RouteComponent() {
     enableSortingRemoval: false,
     sortDescFirst: true,
     enableMultiSort: true,
-    initialState: { sorting: [{ id: "id", desc: false }] },
+    initialState: {
+      sorting: [{ id: "id", desc: false }],
+      pagination: { pageIndex: 0, pageSize: 10 },
+    },
   });
 
   useTanStackTableDevtools(table);
@@ -99,19 +102,27 @@ function RouteComponent() {
             </tr>
           ))}
         </tbody>
-
-        <tfoot>
-          {table.getFooterGroups().map((footerGroup) => (
-            <tr key={footerGroup.id} className={styles.headerRow}>
-              {footerGroup.headers.map((footer) => (
-                <th key={footer.id} className={styles.headerCell}>
-                  <FlexRender footer={footer} />
-                </th>
-              ))}
-            </tr>
-          ))}
-        </tfoot>
       </table>
+
+      <div className="space-x-2">
+        <button
+          type="button"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:bg-black"
+          disabled={!table.getCanPreviousPage()}
+          onClick={table.previousPage}
+        >
+          Prev
+        </button>
+
+        <button
+          type="button"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:bg-black"
+          onClick={table.nextPage}
+          disabled={!table.getCanNextPage()}
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 }
