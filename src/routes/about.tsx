@@ -6,6 +6,7 @@ import {
   createSortedRowModel,
   filterFn_includesString,
   rowPaginationFeature,
+  rowSelectionFeature,
   rowSortingFeature,
   sortFn_alphanumeric,
   sortFn_datetime,
@@ -24,8 +25,9 @@ export const Route = createFileRoute("/about")({
 export const features = tableFeatures({
   rowSortingFeature,
   columnFilteringFeature,
-  // globalFilteringFeature,
   rowPaginationFeature,
+  rowSelectionFeature,
+  // globalFilteringFeature,
 
   filteredRowModel: createFilteredRowModel(),
   paginatedRowModel: createPaginatedRowModel(),
@@ -49,6 +51,9 @@ function RouteComponent() {
     enableSortingRemoval: false,
     sortDescFirst: true,
     enableMultiSort: true,
+    enableRowRangeSelection: true,
+
+    getRowId: (row) => "" + row.id,
     initialState: {
       sorting: [{ id: "id", desc: false }],
       pagination: { pageIndex: 0, pageSize: 10 },
@@ -72,6 +77,18 @@ function RouteComponent() {
         <thead>
           {table.getHeaderGroups().map((headers) => (
             <tr key={headers.id} className={styles.headerRow + " text-center"}>
+              {headers.depth === 1 ? (
+                <th>
+                  <input
+                    type="checkbox"
+                    checked={table.getIsAllRowsSelected()}
+                    onChange={table.getToggleAllRowsSelectedHandler()}
+                  />
+                </th>
+              ) : (
+                <th></th>
+              )}
+
               {headers.headers.map((header) => (
                 <th
                   key={header.id}
@@ -94,6 +111,16 @@ function RouteComponent() {
         <tbody>
           {table.getRowModel().rows.map((row) => (
             <tr key={row.id} className={styles.bodyRow}>
+              <td>
+                <input
+                  type="checkbox"
+                  checked={row.getIsSelected()}
+                  onChange={row.getToggleSelectedHandler({
+                    selectChildren: false,
+                  })}
+                />
+              </td>
+
               {row.getAllCells().map((cell) => (
                 <td key={cell.id} className={styles.bodyCell}>
                   <table.FlexRender cell={cell} />
