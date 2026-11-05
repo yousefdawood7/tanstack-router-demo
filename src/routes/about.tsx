@@ -1,5 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { FlexRender, tableFeatures, useTable } from "@tanstack/react-table";
+import {
+  columnFilteringFeature,
+  createFilteredRowModel,
+  createSortedRowModel,
+  filterFn_includesString,
+  FlexRender,
+  globalFilteringFeature,
+  rowSortingFeature,
+  sortFn_alphanumeric,
+  sortFn_datetime,
+  tableFeatures,
+  useTable,
+} from "@tanstack/react-table";
 import { COLUMNS } from "../components/tables/column";
 import data from "../data/MOCK_DATA.json";
 import { useTanStackTableDevtools } from "@tanstack/react-table-devtools/production";
@@ -9,7 +21,22 @@ export const Route = createFileRoute("/about")({
   component: RouteComponent,
 });
 
-export const features = tableFeatures({});
+export const features = tableFeatures({
+  rowSortingFeature,
+  columnFilteringFeature,
+  globalFilteringFeature,
+  sortedRowModel: createSortedRowModel(),
+  filteredRowModel: createFilteredRowModel(),
+
+  filterFns: {
+    includes: filterFn_includesString,
+  },
+
+  sortFns: {
+    alphanumberic: sortFn_alphanumeric,
+    date: sortFn_datetime,
+  },
+});
 
 function RouteComponent() {
   const table = useTable({
@@ -17,12 +44,23 @@ function RouteComponent() {
     features,
     columns: COLUMNS,
     data,
+    enableSortingRemoval: false,
+    sortDescFirst: true,
+    enableMultiSort: true,
+    initialState: { sorting: [{ id: "id", desc: false }] },
+    globalFilterFn: "includes",
   });
 
   useTanStackTableDevtools(table);
 
   return (
     <div className={styles.container}>
+      <input
+        className="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="Search...."
+        value={table.state.globalFilter ?? ""}
+        onChange={(e) => table.setGlobalFilter(String(e.target.value))}
+      />
       <table className={styles.table}>
         <thead>
           {table.getHeaderGroups().map((headers) => (
@@ -32,9 +70,14 @@ function RouteComponent() {
                   key={header.id}
                   className={styles.headerCell}
                   colSpan={header.colSpan}
+                  onClick={header.column.getToggleSortingHandler()}
                 >
                   {header.isPlaceholder ? null : (
-                    <table.FlexRender header={header} />
+                    <>
+                      <table.FlexRender header={header} />
+                      {header.column.getIsSorted() === "asc" && " ↑"}
+                      {header.column.getIsSorted() === "desc" && " ↓"}
+                    </>
                   )}
                 </th>
               ))}
