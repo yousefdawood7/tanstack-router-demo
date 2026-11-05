@@ -11,11 +11,13 @@ import {
   sortFn_datetime,
   tableFeatures,
   useTable,
+  type ColumnFiltersState,
 } from "@tanstack/react-table";
 import { COLUMNS } from "../components/tables/column";
 import data from "../data/MOCK_DATA.json";
 import { useTanStackTableDevtools } from "@tanstack/react-table-devtools/production";
 import styles from "./about.module.css";
+import { useState } from "react";
 
 export const Route = createFileRoute("/about")({
   component: RouteComponent,
@@ -24,7 +26,7 @@ export const Route = createFileRoute("/about")({
 export const features = tableFeatures({
   rowSortingFeature,
   columnFilteringFeature,
-  globalFilteringFeature,
+  // globalFilteringFeature,
   sortedRowModel: createSortedRowModel(),
   filteredRowModel: createFilteredRowModel(),
 
@@ -48,7 +50,6 @@ function RouteComponent() {
     sortDescFirst: true,
     enableMultiSort: true,
     initialState: { sorting: [{ id: "id", desc: false }] },
-    globalFilterFn: "includes",
   });
 
   useTanStackTableDevtools(table);
@@ -58,8 +59,11 @@ function RouteComponent() {
       <input
         className="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
         placeholder="Search...."
-        value={table.state.globalFilter ?? ""}
-        onChange={(e) => table.setGlobalFilter(String(e.target.value))}
+        onChange={(e) =>
+          table.setColumnFilters([
+            { id: "email", value: String(e.target.value) },
+          ])
+        }
       />
       <table className={styles.table}>
         <thead>

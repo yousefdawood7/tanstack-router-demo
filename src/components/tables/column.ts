@@ -29,6 +29,7 @@ export const COLUMNS: ColumnDef<typeof features, (typeof data)[number]>[] = [
     header: "email",
     footer: "email",
     accessorKey: "email",
+    filterFn: "includes",
   },
   {
     header: "date_of_birth",
@@ -48,4 +49,4 @@ export const COLUMNS: ColumnDef<typeof features, (typeof data)[number]>[] = [
     footer: "phone",
     accessorKey: "phone",
   },
-];
+] as const;
