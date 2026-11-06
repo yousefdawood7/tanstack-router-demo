@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import {
   columnFilteringFeature,
+  columnOrderingFeature,
   createFilteredRowModel,
   createPaginatedRowModel,
   createSortedRowModel,
@@ -17,6 +18,9 @@ import { useTanStackTableDevtools } from "@tanstack/react-table-devtools/product
 import { COLUMNS } from "../components/tables/column";
 import data from "../data/MOCK_DATA.json";
 import styles from "./about.module.css";
+import type { DragEndEvent } from "@dnd-kit/react";
+import type React from "react";
+import { useSortable } from "@dnd-kit/react/sortable";
 
 export const Route = createFileRoute("/about")({
   component: RouteComponent,
@@ -27,6 +31,7 @@ export const features = tableFeatures({
   columnFilteringFeature,
   rowPaginationFeature,
   rowSelectionFeature,
+  columnOrderingFeature,
   // globalFilteringFeature,
 
   filteredRowModel: createFilteredRowModel(),
@@ -77,8 +82,9 @@ function RouteComponent() {
         <thead>
           {table.getHeaderGroups().map((headers) => (
             <tr key={headers.id} className={styles.headerRow + " text-center"}>
+              <th className={styles.headerCell}></th>
               {headers.depth === 1 ? (
-                <th>
+                <th className={styles.headerCell}>
                   <input
                     type="checkbox"
                     checked={table.getIsAllRowsSelected()}
@@ -86,7 +92,7 @@ function RouteComponent() {
                   />
                 </th>
               ) : (
-                <th></th>
+                <th className={styles.headerCell}></th>
               )}
 
               {headers.headers.map((header) => (
@@ -110,8 +116,12 @@ function RouteComponent() {
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className={styles.bodyRow}>
-              <td>
+            <Sortable id={row.id} index={row.index}>
+              <td className={styles.bodyCell + " cursor-pointer"}>
+                <span>=</span>
+              </td>
+
+              <td className={styles.bodyCell}>
                 <input
                   type="checkbox"
                   checked={row.getIsSelected()}
@@ -126,7 +136,7 @@ function RouteComponent() {
                   <table.FlexRender cell={cell} />
                 </td>
               ))}
-            </tr>
+            </Sortable>
           ))}
         </tbody>
       </table>
@@ -151,5 +161,29 @@ function RouteComponent() {
         </button>
       </div>
     </div>
+  );
+}
+
+type Sortable = {
+  id: string;
+  index: number;
+  children: React.ReactNode;
+};
+
+function Sortable({ children, id, index }: Sortable) {
+  const { ref, isDragging } = useSortable({ id, index });
+  console.log(isDragging);
+  return (
+    <tr
+      ref={ref}
+      key={id}
+      className={
+        styles.bodyRow +
+        " transition-shadow" +
+        (isDragging ? " shadow-xl bg-black/10" : "")
+      }
+    >
+      {children}
+    </tr>
   );
 }
