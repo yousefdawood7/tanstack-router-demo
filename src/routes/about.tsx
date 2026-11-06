@@ -1,7 +1,9 @@
+import { useSortable } from "@dnd-kit/react/sortable";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   columnFilteringFeature,
   columnOrderingFeature,
+  columnVisibilityFeature,
   createFilteredRowModel,
   createPaginatedRowModel,
   createSortedRowModel,
@@ -15,12 +17,10 @@ import {
   useTable,
 } from "@tanstack/react-table";
 import { useTanStackTableDevtools } from "@tanstack/react-table-devtools/production";
+import type React from "react";
 import { COLUMNS } from "../components/tables/column";
 import data from "../data/MOCK_DATA.json";
 import styles from "./about.module.css";
-import type { DragEndEvent } from "@dnd-kit/react";
-import type React from "react";
-import { useSortable } from "@dnd-kit/react/sortable";
 
 export const Route = createFileRoute("/about")({
   component: RouteComponent,
@@ -32,6 +32,7 @@ export const features = tableFeatures({
   rowPaginationFeature,
   rowSelectionFeature,
   columnOrderingFeature,
+  columnVisibilityFeature,
   // globalFilteringFeature,
 
   filteredRowModel: createFilteredRowModel(),
@@ -78,6 +79,16 @@ function RouteComponent() {
           ])
         }
       />
+      <input
+        type="checkbox"
+        className="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        onChange={(e) =>
+          table.setColumnVisibility({
+            id: e.target.checked,
+          })
+        }
+      />
+
       <table className={styles.table}>
         <thead>
           {table.getHeaderGroups().map((headers) => (
@@ -116,7 +127,7 @@ function RouteComponent() {
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <Sortable id={row.id} index={row.index}>
+            <Sortable key={row.id} id={row.id} index={row.index}>
               <td className={styles.bodyCell + " cursor-pointer"}>
                 <span>=</span>
               </td>

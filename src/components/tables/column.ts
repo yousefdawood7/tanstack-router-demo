@@ -8,6 +8,7 @@ export const COLUMNS: ColumnDef<typeof features, (typeof data)[number]>[] = [
     footer: "id",
     accessorKey: "id",
     sortFn: "alphanumberic",
+    enableHiding: true,
   },
   {
     header: "name",
